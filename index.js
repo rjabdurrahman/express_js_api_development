@@ -15,6 +15,8 @@ app.use(express.json())
 app.get('/', Home.get)
 app.post('/signup', signupValidations, UserController.signup)
 app.post('/login', UserController.login)
+app.put('/active-user/:id', UserController.activeUser)
+app.delete('/active-user/:id', UserController.deleteUser)
 
 app.get('/products', ProductCotroller.get)
 app.post('/product', ProductCotroller.post)
