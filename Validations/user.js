@@ -20,5 +20,16 @@ const signupValidations = [
     ,
 ]
 
+const loginValidations = [
+    check('email')
+        .notEmpty().withMessage('Email is required!')
+        .isEmail().withMessage('Invalid email format!')
+    ,
+    check('password')
+        .notEmpty().withMessage('Password is required!')
+        .isLength({ min: 6 }).withMessage('Password should be at least 6 characters!')
+        .matches('[a-z]').withMessage('Password should contain at leas one alphabet!')
+]
 
-module.exports = { signupValidations }
+
+module.exports = { signupValidations, loginValidations  }

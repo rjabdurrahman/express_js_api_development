@@ -5,7 +5,7 @@ const connectDB = require('./utils/db')
 const Home = require('./Controllers/Home')
 const ProductCotroller = require('./Controllers/Product')
 const UserController = require('./Controllers/User')
-const { signupValidations } = require('./Validations/user')
+const { signupValidations, loginValidations } = require('./Validations/user')
 
 connectDB()
 
@@ -14,7 +14,7 @@ app.use(express.json())
 
 app.get('/', Home.get)
 app.post('/signup', signupValidations, UserController.signup)
-app.post('/login', UserController.login)
+app.post('/login', loginValidations, UserController.login)
 app.put('/active-user/:id', UserController.activeUser)
 app.delete('/active-user/:id', UserController.deleteUser)
 
