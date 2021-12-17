@@ -5,7 +5,9 @@ const connectDB = require('./utils/db')
 const Home = require('./Controllers/Home')
 const ProductCotroller = require('./Controllers/Product')
 const UserController = require('./Controllers/User')
-const { signupValidations, loginValidations } = require('./Validations/user')
+const OrderController = require('./Controllers/Order')
+const { signupValidations, loginValidations } = require('./Validations/user');
+const auth = require('./Helpers/auth');
 
 connectDB()
 
@@ -20,5 +22,10 @@ app.delete('/active-user/:id', UserController.deleteUser)
 
 app.get('/products', ProductCotroller.get)
 app.post('/product', ProductCotroller.post)
+app.get(
+    '/all-orders',
+    auth,
+    OrderController.getAll
+)
 
 app.listen(5000, () => console.log('App is running in http://localhost:5000'))

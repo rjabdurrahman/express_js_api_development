@@ -14,6 +14,10 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+    type: {
+        type: String,
+        default: 'general'
+    },
     active: {
         type: Boolean,
         default: false
