@@ -1,5 +1,7 @@
 const { validationResult } = require("express-validator")
 const User = require('../Models/User');
+const bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
 
 // Custom Result
 const fieldErrorResults = validationResult.withDefaults({
@@ -13,10 +15,41 @@ class UserController {
         const errors = fieldErrorResults(req);
         if (errors.isEmpty()) {
             const { name, email, password, phone } = req.body;
-            const user = await new User({ name, email, password, phone }).save();
-            res.send(user)
+            const salt = bcrypt.genSaltSync(10);
+            let hashPassword = bcrypt.hashSync(password, salt);
+            const user = await new User({ name, email, password: hashPassword, phone }).save();
+            res.send({
+                msg: 'Account sucessfully created!',
+                payload: user
+            })
         }
         else return res.json(errors.mapped());
+    }
+
+    static async login(req, res) {
+        const errors = fieldErrorResults(req);
+        if (errors.isEmpty()) {
+            const { email, password } = req.body;
+            let user = await User.findOne({ email }).lean().exec();
+            if (!user) {
+                res.status(400).send({
+                    msg: 'There is no user in this email'
+                })
+            }
+            else {
+                if (bcrypt.compareSync(password, user.password)) {
+                    const { name, email, phone, active } = user;
+                    const token = jwt.sign({ name, email, phone, active }, 'MY_SECRECT3693');
+                    res.send({ token })
+                }
+                else {
+                    res.status(400).send({
+                        msg: 'Password doesn\'t match'
+                    })
+                }
+            }
+        }
+        else return res.status(422).json(errors.mapped());
     }
 
     static async activeUser(req, res) {
@@ -45,10 +78,6 @@ class UserController {
             console.log(error);
             res.send(error.message);
         }
-    }
-
-    static login(req, res) {
-        res.send('Login Route')
     }
 }
 
