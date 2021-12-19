@@ -29,5 +29,6 @@ app.get(
 )
 
 const PORT = process.env.PORT || 5000;
+console.log('Ok')
 
 app.listen(PORT, () => console.log('App is running in http://localhost:5000'))
