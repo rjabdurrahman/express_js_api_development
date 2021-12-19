@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index",
-    "start": "node index"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "author": "Abdur Rahman",
   "license": "ISC",
