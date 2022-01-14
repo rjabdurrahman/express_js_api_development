@@ -18,8 +18,9 @@ class ProductCotroller {
 
     static async post(req, res) {
         try {
+            // Validation
             await new Product(req.body).save()
-            return res.send('OK')
+            return res.send('Added Successfully');
         } catch (error) {
             res.send('An error occured!');
         }

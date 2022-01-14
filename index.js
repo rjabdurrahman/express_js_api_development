@@ -1,4 +1,3 @@
-const { urlencoded } = require('express');
 const express = require('express');
 const app = express()
 const connectDB = require('./utils/db')
@@ -11,12 +10,13 @@ const auth = require('./Helpers/auth');
 
 connectDB()
 
-app.use(urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 app.get('/', Home.get)
 app.post('/signup', signupValidations, UserController.signup)
 app.post('/login', loginValidations, UserController.login)
+app.use(auth)
 app.put('/active-user/:id', UserController.activeUser)
 app.delete('/active-user/:id', UserController.deleteUser)
 
@@ -24,11 +24,9 @@ app.get('/products', ProductCotroller.get)
 app.post('/product', ProductCotroller.post)
 app.get(
     '/all-orders',
-    auth,
     OrderController.getAll
 )
 
 const PORT = process.env.PORT || 5000;
-console.log('Ok')
 
 app.listen(PORT, () => console.log('App is running in http://localhost:5000'))

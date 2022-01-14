@@ -40,7 +40,7 @@ class UserController {
                 if (bcrypt.compareSync(password, user.password)) {
                     const { name, email, phone, active } = user;
                     const token = jwt.sign({ name, email, phone, active }, 'MY_SECRECT3693');
-                    res.send({ token })
+                    res.send({ token: 'Bearer ' + token })
                 }
                 else {
                     res.status(400).send({

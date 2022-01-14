@@ -1,6 +1,10 @@
 class OrderController {
     static getAll(req, res) {
-        res.send('All Orders are here');
+        res.send([
+            'Order 1',
+            'Order 2',
+            'Order 3',
+        ]);
     }
 }
 
